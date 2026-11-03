@@ -3,111 +3,345 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GooshedCS</title>
+<title>GooshedCS | CS2, cracked open</title>
 <meta name="description" content="CS2, cracked open. Pro moments, lineups that land, and the stories behind the skins.">
 <meta property="og:title" content="GooshedCS">
 <meta property="og:description" content="CS2, cracked open.">
 <meta property="og:image" content="https://gooshed.com/assets/avatar_youtube_800.png">
 <meta property="og:url" content="https://gooshed.com/">
-<meta name="theme-color" content="#191b18">
+<meta name="theme-color" content="#0a260c">
 <link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @font-face { font-family: "Barlow Condensed"; font-weight: 700; src: url(assets/BarlowCondensed-Bold.ttf) format("truetype"); font-display: swap; }
-  @font-face { font-family: "Barlow Condensed"; font-weight: 500; src: url(assets/BarlowCondensed-Medium.ttf) format("truetype"); font-display: swap; }
-
-  /* Brand tokens, from nade-pipeline/brand/tokens.css */
+  /* Brand tokens from nade-pipeline/brand/tokens.css, plus the deep "field" green for this page */
   :root {
-    --goo: #9ad92a; --goo-deep: #5f8a19; --bone: #e8e8e2; --ash: #9a9a92;
-    --pit: #191b18; --slab: #21241f; --seam: #353a31; --ink: #111111;
-    --font: "Barlow Condensed", "Bahnschrift", "Arial Narrow", sans-serif;
+    --goo: #9ad92a; --goo-deep: #5f8a19; --bone: #e8e8e2; --ash: #9a9a92; --ink: #111111;
+    --field: #0a260c; --field-2: #0f3311; --rule: rgba(154, 217, 42, .28);
+    --fg: var(--bone); --dim: rgba(232, 232, 226, .62); --char: #9ad92a;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  :root[data-theme="light"] {
+    --field: #e8e8e2; --field-2: #dcdcd4; --rule: rgba(17, 17, 17, .22);
+    --fg: #111111; --dim: rgba(17, 17, 17, .6); --char: #2f4a0c;
   }
   * { box-sizing: border-box; margin: 0; }
-  html { background: var(--pit); }
-  body {
-    min-height: 100vh; color: var(--bone); font: 500 18px/1.4 var(--font);
-    background: radial-gradient(ellipse 70% 45% at 50% 0%, #2a3320 0%, var(--pit) 70%);
-    display: flex; justify-content: center; padding: 48px 16px 40px;
+  html { background: var(--field); color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
+  body { background: var(--field); color: var(--fg); font: 400 13px/1.45 var(--mono); letter-spacing: .02em; }
+  a { color: inherit; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; height: 100svh; min-height: 560px; overflow: hidden; }
+  #ascii { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero video { display: none; }
+  /* Shade behind the HUD corners and title so text reads over the field */
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 34% 26% at 0% 0%, var(--field) 0%, transparent 100%),
+      radial-gradient(ellipse 60% 34% at 18% 52%, color-mix(in srgb, var(--field) 70%, transparent) 0%, transparent 100%),
+      radial-gradient(ellipse 30% 24% at 100% 100%, var(--field) 0%, transparent 100%),
+      linear-gradient(to top, var(--field) 0%, transparent 18%);
   }
-  main { width: 100%; max-width: 440px; display: flex; flex-direction: column; align-items: center; }
+  .hud { position: absolute; z-index: 2; text-transform: uppercase; font-size: 12px; line-height: 1.5; white-space: pre; }
+  .hud.tl { top: 22px; left: 24px; }
+  .hud.tl img { width: 40px; height: 40px; display: block; margin-bottom: 14px; }
+  .hud.tr, .hud.br { padding-left: 12px; border-left: 2px solid var(--goo); }
+  .hud.tr { top: 96px; right: 28px; }
+  .hud.br { bottom: 92px; right: 28px; }
+  :root[data-theme="light"] .hud.tr, :root[data-theme="light"] .hud.br { border-color: var(--goo-deep); }
 
-  .skull { width: 112px; height: 112px; animation: bob 3.2s ease-in-out infinite; }
-  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
-  .wordmark { width: min(300px, 80%); margin-top: 18px; }
-  .tagline { margin-top: 6px; color: var(--ash); font-size: 19px; letter-spacing: .04em; text-transform: uppercase; }
+  .title { position: absolute; z-index: 2; left: 24px; right: 24px; top: 50%; transform: translateY(-38%); }
+  .wordmark { display: block; width: min(980px, 92%); height: auto; }
+  :root[data-theme="light"] .wordmark { filter: invert(1) brightness(.2); }
+  .tagline { margin-top: 22px; font-weight: 700; font-size: clamp(13px, 1.6vw, 17px); letter-spacing: .32em; text-transform: uppercase; }
 
-  h2 {
-    align-self: stretch; margin: 34px 0 12px; color: var(--ash);
-    font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
-    display: flex; align-items: center; gap: 10px;
+  .modes { position: absolute; z-index: 2; left: 24px; bottom: 24px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .modes button {
+    font: 700 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--fg); background: rgba(232, 232, 226, .1); border: 1px solid transparent;
+    padding: 10px 12px; border-radius: 3px; cursor: pointer;
+    transition: background .15s, transform .18s cubic-bezier(.3, 1.6, .5, 1);
   }
-  h2::after { content: ""; flex: 1; height: 1px; background: var(--seam); }
+  :root[data-theme="light"] .modes button { background: rgba(17, 17, 17, .08); }
+  .modes button:hover, .modes button:focus-visible { background: var(--goo); color: var(--ink); outline: none; transform: translateY(-2px); }
+  .modes button[aria-pressed="true"] { border-color: var(--goo); }
+  .modes kbd { font: inherit; opacity: .55; margin-right: 6px; }
 
-  .links { align-self: stretch; display: flex; flex-direction: column; gap: 10px; }
-  .link {
-    display: flex; align-items: center; gap: 14px; padding: 14px 16px;
-    background: var(--slab); border: 1px solid var(--seam); border-radius: 12px;
-    color: var(--bone); text-decoration: none;
-    transition: transform .18s cubic-bezier(.3,1.6,.5,1), border-color .15s, background .15s;
+  .scroll-cue { position: absolute; z-index: 2; right: 28px; bottom: 30px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; text-decoration: none; }
+  .scroll-cue:hover { color: var(--goo); }
+
+  /* ---------- Links ---------- */
+  .links-wrap { position: relative; z-index: 3; background: var(--field); border-top: 1px solid var(--rule); padding: 56px 24px 40px; }
+  .links-inner { max-width: 980px; }
+  .section-label { color: var(--dim); text-transform: uppercase; letter-spacing: .2em; font-size: 12px; margin: 34px 0 10px; }
+  .section-label:first-child { margin-top: 0; }
+  .row {
+    display: flex; align-items: baseline; gap: 14px; padding: 16px 4px; border-bottom: 1px solid var(--rule);
+    text-decoration: none; text-transform: uppercase; font-size: clamp(16px, 2.4vw, 24px); font-weight: 700;
+    transition: background .12s, color .12s, padding .2s cubic-bezier(.3, 1.6, .5, 1);
   }
-  .link:hover, .link:focus-visible { transform: translateY(-2px) scale(1.015); border-color: var(--goo); background: #262a22; outline: none; }
-  .link:active { transform: scale(.98); }
-  .link svg { width: 26px; height: 26px; flex: none; fill: currentColor; }
-  .link .text { display: flex; flex-direction: column; min-width: 0; }
-  .link b { font-weight: 700; font-size: 21px; text-transform: uppercase; letter-spacing: .02em; line-height: 1.1; }
-  .link small { color: var(--ash); font-size: 15px; }
-  .link .go { margin-left: auto; color: var(--goo); font-weight: 700; font-size: 22px; }
+  .row .dots { flex: 1; min-width: 20px; overflow: hidden; white-space: nowrap; color: var(--dim); font-weight: 400; }
+  .row .dots::before { content: "................................................................................................................"; }
+  .row .meta { color: var(--dim); font-weight: 400; font-size: clamp(12px, 1.5vw, 15px); text-transform: none; }
+  .row .arrow { color: var(--goo); }
+  :root[data-theme="light"] .row .arrow { color: var(--goo-deep); }
+  a.row:hover, a.row:focus-visible { background: var(--goo); color: var(--ink); padding-left: 14px; outline: none; }
+  a.row:hover .dots, a.row:hover .meta, a.row:hover .arrow, a.row:focus-visible .meta { color: var(--ink); }
+  .row.soon { opacity: .55; }
+  .chip { background: var(--goo); color: var(--ink); font-size: 11px; letter-spacing: .14em; padding: 3px 7px; border-radius: 2px; }
+  footer { margin-top: 48px; color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
-  .soon { opacity: .6; cursor: default; pointer-events: none; }
-  .chip {
-    margin-left: auto; padding: 3px 9px; border-radius: 6px; background: var(--goo); color: var(--ink);
-    font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; transform: skewX(-8deg);
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; z-index: 9; background: var(--goo); color: var(--ink); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; padding: 10px 14px; border-radius: 3px; transition: opacity .2s, transform .25s cubic-bezier(.3, 1.6, .5, 1); pointer-events: none; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 720px) {
+    .hero { height: 74svh; min-height: 480px; }
+    .hud { font-size: 10px; }
+    .hud.tl { left: 16px; top: 16px; } .hud.tl img { width: 32px; height: 32px; margin-bottom: 10px; }
+    .hud.tr { display: none; }
+    .hud.br { right: 16px; bottom: 76px; }
+    .title { left: 16px; right: 16px; }
+    .wordmark { width: 100%; }
+    .tagline { letter-spacing: .2em; margin-top: 14px; }
+    .modes { left: 16px; bottom: 16px; gap: 6px; }
+    .modes button { padding: 9px 10px; font-size: 11px; }
+    .scroll-cue { display: none; }
+    .links-wrap { padding: 36px 16px 32px; }
+    .row { gap: 10px; padding: 14px 2px; }
+    .row .meta { display: none; }
   }
-
-  footer { margin-top: 40px; color: var(--ash); font-size: 14px; text-align: center; }
-  footer a { color: var(--ash); }
-
-  @media (prefers-reduced-motion: reduce) { .skull { animation: none; } .link { transition: none; } }
 </style>
 </head>
 <body>
-<main>
-  <img class="skull" src="assets/skull_512.png" alt="">
-  <img class="wordmark" src="assets/wordmark_dark-bg.svg" alt="GooshedCS">
-  <p class="tagline">CS2, cracked open</p>
+<section class="hero" aria-label="GooshedCS">
+  <canvas id="ascii" aria-hidden="true"></canvas>
+  <video id="feed" src="assets/loop.mp4" muted loop playsinline autoplay preload="auto"></video>
 
-  <h2>Watch</h2>
-  <nav class="links">
-    <a class="link" href="https://www.youtube.com/@GooshedCS">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
-      <span class="text"><b>YouTube</b><small>@GooshedCS</small></span><span class="go">›</span>
-    </a>
-    <a class="link" href="https://www.tiktok.com/@gooshedcs">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 1 1-2-2.7V9.5a6.3 6.3 0 1 0 5.4 6.2V8.8a8.2 8.2 0 0 0 4.8 1.5V6.9a4.8 4.8 0 0 1-1-.2z"/></svg>
-      <span class="text"><b>TikTok</b><small>@gooshedcs</small></span><span class="go">›</span>
-    </a>
-    <a class="link" href="https://www.instagram.com/gooshedcs/">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
-      <span class="text"><b>Instagram</b><small>@gooshedcs</small></span><span class="go">›</span>
-    </a>
-  </nav>
+  <div class="hud tl"><img src="assets/skull_512.png" alt="">GOOSHED.EXE
+V0.2.0
+REALTIME <span id="fps">--</span> FPS
+FEED: DE_DUST2 / R18
+STATUS: ONLINE</div>
 
-  <h2>Free stuff</h2>
-  <div class="links">
-    <div class="link soon" aria-disabled="true">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-5 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm10 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM12 16a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/></svg>
-      <span class="text"><b>Lineup pack</b><small>Every lineup, one practice config</small></span><span class="chip">Soon</span>
-    </div>
+  <div class="hud tr">LUMA: <span id="luma">0.00</span>
+MOTION: <span id="motion">0.0</span>%
+X: <span id="px">----</span>
+Y: <span id="py">----</span></div>
+
+  <div class="hud br">VIEWER.ONE
+TIME: <span id="clock">--:--:--</span> PST
+ZONE: LOS ANGELES
+PHASE: <span id="phase">--</span></div>
+
+  <div class="title">
+    <h1><img class="wordmark" src="assets/wordmark_mono-bone.svg" alt="GooshedCS" width="1188" height="300"></h1>
+    <p class="tagline">CS2, cracked open.</p>
   </div>
 
-  <h2>Work with us</h2>
-  <div class="links">
-    <a class="link" href="mailto:hello@gooshed.com">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm10 8.6L2.4 6.5v.1L12 13l9.6-6.4v-.1L12 12.6z"/></svg>
-      <span class="text"><b>Business</b><small>hello@gooshed.com</small></span><span class="go">›</span>
-    </a>
+  <div class="modes">
+    <button id="m-light" aria-pressed="false"><kbd>L</kbd>Light</button>
+    <button id="m-goo" aria-pressed="true"><kbd>G</kbd>Goo</button>
+    <button id="m-pause" aria-pressed="false"><kbd>P</kbd>Pause</button>
+    <button id="m-share"><kbd>S</kbd>Share</button>
   </div>
+  <a class="scroll-cue" href="#links">↓ Links</a>
+</section>
 
-  <footer>© 2026 GooshedCS · Not affiliated with Valve</footer>
-</main>
+<section class="links-wrap" id="links">
+  <div class="links-inner">
+    <p class="section-label">// Watch</p>
+    <a class="row" href="https://www.youtube.com/@GooshedCS"><span>YouTube</span><span class="dots"></span><span class="meta">@GooshedCS</span><span class="arrow">↗</span></a>
+    <a class="row" href="https://www.tiktok.com/@gooshedcs"><span>TikTok</span><span class="dots"></span><span class="meta">@gooshedcs</span><span class="arrow">↗</span></a>
+    <a class="row" href="https://www.instagram.com/gooshedcs/"><span>Instagram</span><span class="dots"></span><span class="meta">@gooshedcs</span><span class="arrow">↗</span></a>
+
+    <p class="section-label">// Free stuff</p>
+    <div class="row soon" aria-disabled="true"><span>Lineup pack</span><span class="dots"></span><span class="meta">Every lineup, one practice config</span><span class="chip">Soon</span></div>
+
+    <p class="section-label">// Work with us</p>
+    <a class="row" href="mailto:hello@gooshed.com"><span>Business</span><span class="dots"></span><span class="meta">hello@gooshed.com</span><span class="arrow">↗</span></a>
+
+    <footer><span>© 2026 GooshedCS</span><span>Not affiliated with Valve</span></footer>
+  </div>
+</section>
+
+<div class="toast" id="toast">Link copied</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const canvas = document.getElementById('ascii');
+  const ctx = canvas.getContext('2d');
+  const video = document.getElementById('feed');
+  const sample = document.createElement('canvas');
+  const sctx = sample.getContext('2d', { willReadFrequently: true });
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const RAMP = ' .:-=+*#%@';
+  const FONT_PX = 10;
+  let cellW = 6, cellH = 11, cols = 0, rows = 0, dpr = 1;
+  let prev = null, paused = false, gooMode = true;
+  let pointer = { x: -1, y: -1, active: false };
+
+  try { if (localStorage.getItem('gs-theme') === 'light') setTheme('light'); } catch (e) {}
+
+  function setTheme(t) {
+    if (t === 'light') root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    $('m-light').setAttribute('aria-pressed', t === 'light');
+    try { localStorage.setItem('gs-theme', t); } catch (e) {}
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const r = canvas.getBoundingClientRect();
+    canvas.width = Math.round(r.width * dpr);
+    canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.font = `${FONT_PX}px ${getComputedStyle(document.body).fontFamily}`;
+    cellW = ctx.measureText('M').width || 6;
+    cellH = FONT_PX * 1.12;
+    cols = Math.ceil(r.width / cellW);
+    rows = Math.ceil(r.height / cellH);
+    sample.width = cols; sample.height = rows;
+    prev = null;
+  }
+
+  // Cover-fit the video into the sample grid (cells are ~2x taller than wide)
+  function drawSample() {
+    const vw = video.videoWidth, vh = video.videoHeight;
+    if (!vw) return false;
+    const gridAspect = (cols * cellW) / (rows * cellH);
+    let sw = vw, sh = vw / gridAspect;
+    if (sh > vh) { sh = vh; sw = vh * gridAspect; }
+    sctx.drawImage(video, (vw - sw) / 2, (vh - sh) / 2, sw, sh, 0, 0, cols, rows);
+    return true;
+  }
+
+  let last = 0, frames = 0, fpsT = 0;
+  function frame(t) {
+    requestAnimationFrame(frame);
+    if (paused || t - last < 1000 / 30) return;
+    last = t; frames++;
+    if (t - fpsT > 1000) { $('fps').textContent = frames; frames = 0; fpsT = t; }
+    render();
+  }
+
+  function render() {
+    if (!cols || !drawSample()) return;
+    const data = sctx.getImageData(0, 0, cols, rows).data;
+    const css = getComputedStyle(root);
+    const light = root.getAttribute('data-theme') === 'light';
+    const charColor = gooMode ? css.getPropertyValue('--char').trim() : css.getPropertyValue('--fg').trim();
+    const w = canvas.width / dpr, h = canvas.height / dpr;
+    ctx.clearRect(0, 0, w, h);
+    ctx.textBaseline = 'top';
+
+    const n = cols * rows;
+    const lum = new Float32Array(n);
+    let sum = 0, moved = 0;
+    for (let i = 0; i < n; i++) {
+      const p = i * 4;
+      let l = (0.2126 * data[p] + 0.7152 * data[p + 1] + 0.0722 * data[p + 2]) / 255;
+      l = Math.min(1, Math.max(0, (l - 0.3) * 1.55));         // crush mids so the field stays sparse
+      if (prev && Math.abs(l - prev[i]) > 0.08) moved++;
+      lum[i] = l; sum += l;
+    }
+    // Pointer lens: brighten a soft disc under the cursor
+    if (pointer.active) {
+      const cx = pointer.x / cellW, cy = pointer.y / cellH, R = 9;
+      for (let y = Math.max(0, cy - R | 0); y < Math.min(rows, cy + R); y++)
+        for (let x = Math.max(0, cx - R * 2 | 0); x < Math.min(cols, cx + R * 2); x++) {
+          const d = Math.hypot((x - cx) / 2, y - cy) / R;
+          if (d < 1) lum[y * cols + x] = Math.min(1, lum[y * cols + x] + (1 - d) * 0.55);
+        }
+    }
+
+    // Two passes per row: dim field, then bright highlights on top
+    const top = RAMP.length - 1;
+    for (let y = 0; y < rows; y++) {
+      let dim = '', hot = '';
+      for (let x = 0; x < cols; x++) {
+        const l = lum[y * cols + x];
+        const c = RAMP[Math.round(l * top)];
+        if (l > 0.62) { dim += ' '; hot += c; } else { dim += c; hot += ' '; }
+      }
+      ctx.globalAlpha = light ? 0.45 : 0.32; ctx.fillStyle = charColor;
+      ctx.fillText(dim, 0, y * cellH);
+      ctx.globalAlpha = light ? 0.95 : 0.9;
+      ctx.fillText(hot, 0, y * cellH);
+    }
+    ctx.globalAlpha = 1;
+    prev = lum;
+    $('luma').textContent = (sum / n).toFixed(2);
+    $('motion').textContent = (moved / n * 100).toFixed(1);
+  }
+
+  function clock() {
+    const now = new Date();
+    const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    $('clock').textContent = fmt.format(now);
+    const h = +new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', hour12: false, hour: 'numeric' }).format(now) % 24;
+    $('phase').textContent = h >= 23 || h < 2 ? 'DROP WINDOW' : h < 6 ? 'LATE NIGHT' : h < 12 ? 'WARMUP' : h < 18 ? 'SCRIMS' : 'PRIME TIME';
+  }
+
+  function toast(msg) {
+    const el = $('toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 1600);
+  }
+
+  const actions = {
+    light() { setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); render(); },
+    goo() { gooMode = !gooMode; $('m-goo').setAttribute('aria-pressed', gooMode); render(); },
+    pause() {
+      paused = !paused; $('m-pause').setAttribute('aria-pressed', paused);
+      paused ? video.pause() : video.play().catch(() => {});
+    },
+    async share() {
+      const url = 'https://gooshed.com';
+      try {
+        if (navigator.share) await navigator.share({ title: 'GooshedCS', text: 'CS2, cracked open.', url });
+        else { await navigator.clipboard.writeText(url); toast('Link copied'); }
+      } catch (e) {}
+    }
+  };
+  $('m-light').onclick = actions.light;
+  $('m-goo').onclick = actions.goo;
+  $('m-pause').onclick = actions.pause;
+  $('m-share').onclick = actions.share;
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
+    const k = { l: 'light', g: 'goo', p: 'pause', s: 'share' }[e.key.toLowerCase()];
+    if (k) { e.preventDefault(); actions[k](); }
+  });
+
+  const hero = document.querySelector('.hero');
+  hero.addEventListener('pointermove', e => {
+    const r = canvas.getBoundingClientRect();
+    pointer = { x: e.clientX - r.left, y: e.clientY - r.top, active: true };
+    $('px').textContent = String(Math.round(pointer.x)).padStart(4, '0');
+    $('py').textContent = String(Math.round(pointer.y)).padStart(4, '0');
+  });
+  hero.addEventListener('pointerleave', () => { pointer.active = false; $('px').textContent = $('py').textContent = '----'; });
+
+  addEventListener('resize', resize);
+  clock(); setInterval(clock, 1000);
+
+  document.fonts.ready.then(() => {
+    resize();
+    if (reduce) {
+      paused = true; $('m-pause').setAttribute('aria-pressed', true);
+      video.addEventListener('loadeddata', () => { video.currentTime = 6.5; }, { once: true });
+      video.addEventListener('seeked', render);
+      video.pause();
+    } else {
+      video.play().catch(() => {});
+      requestAnimationFrame(frame);
+    }
+  });
+})();
+</script>
 </body>
 </html>
